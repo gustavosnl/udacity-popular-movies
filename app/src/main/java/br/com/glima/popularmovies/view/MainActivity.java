@@ -1,7 +1,9 @@
-package br.com.glima.popularmovies;
+package br.com.glima.popularmovies.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import br.com.glima.popularmovies.R;
 
 public class MainActivity extends AppCompatActivity {
 
