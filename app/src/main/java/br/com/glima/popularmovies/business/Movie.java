@@ -23,15 +23,19 @@ public class Movie {
 	public String getTitle() {
 		return title;
 	}
+
 	public String getPoster() {
 		return poster;
 	}
+
 	public String getSynopsis() {
 		return synopsis;
 	}
+
 	public String getRating() {
 		return rating;
 	}
+	
 	public String getReleaseDate() {
 		return releaseDate;
 	}
