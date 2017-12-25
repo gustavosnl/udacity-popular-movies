@@ -11,6 +11,5 @@ import br.com.glima.popularmovies.business.Movie;
 public interface MoviesCallBack {
 
 	void onFetchMoviesCompleted(List<Movie> movies);
-
-	void showProgress();
+	void onFetchMoviesStarted();
 }

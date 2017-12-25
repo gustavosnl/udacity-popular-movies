@@ -5,4 +5,10 @@ package br.com.glima.popularmovies.network;
  */
 
 public class LoadTopRatedMoviesTask extends MoviesTask {
+
+	private static final String TOP_RATED_MOVIES_PATH = "movie/top_rated";
+
+	public LoadTopRatedMoviesTask(MoviesCallBack callBack) {
+		super(callBack, TOP_RATED_MOVIES_PATH);
+	}
 }
