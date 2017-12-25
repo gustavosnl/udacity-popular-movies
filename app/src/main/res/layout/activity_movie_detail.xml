@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/movie_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:textSize="24sp"
+        tools:text="MOVIE TITLE"/>
+
+    <ImageView
+        android:id="@+id/movie_thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/movie_title"
+        android:layout_marginTop="16dp"
+        android:minWidth="120dp"
+        android:minHeight="180dp"
+        android:scaleType="fitCenter"
+        android:layout_marginRight="8dp"
+        tools:src="@drawable/ic_launcher_foreground"/>
+
+    <TextView
+        android:id="@+id/label_synopsis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/movie_title"
+        android:layout_alignTop="@id/movie_thumbnail"
+        android:layout_toRightOf="@id/movie_thumbnail"
+        android:text="@string/label_synopsis"
+        android:includeFontPadding="false"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/synopsis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/label_synopsis"
+        android:layout_marginTop="8dp"
+        android:gravity="center_horizontal|left"
+        android:layout_toRightOf="@id/movie_thumbnail"
+        tools:text="Walter White, a struggling high school chemistry teacher, is diagnosed with advanced lung cancer. He turns to a life of crime, producing and selling methamphetamine accompanied by a former student, Jesse Pinkman, with the aim of securing his family's financial future before he dies."/>
+
+    <TextView
+        android:id="@+id/release_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/synopsis"
+        android:layout_marginTop="16dp"
+        android:layout_toRightOf="@id/movie_thumbnail"
+        tools:text="Released on 1991"/>
+
+    <TextView
+        android:id="@+id/rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/synopsis"
+        android:layout_marginTop="16dp"
+        android:layout_toRightOf="@id/release_date"
+        android:gravity="right"
+        tools:text="Rating: 4.2"/>
+</RelativeLayout>

@@ -1,10 +1,12 @@
 package br.com.glima.popularmovies.business;
 
+import java.io.Serializable;
+
 /**
  * Created by gustavo.lima on 18/12/17.
  */
 
-public class Movie {
+public class Movie implements Serializable {
 
 	private String title;
 	private String poster;
@@ -35,7 +37,7 @@ public class Movie {
 	public String getRating() {
 		return rating;
 	}
-	
+
 	public String getReleaseDate() {
 		return releaseDate;
 	}
