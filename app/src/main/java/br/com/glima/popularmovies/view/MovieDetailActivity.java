@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.squareup.picasso.Picasso;
 
@@ -47,10 +46,10 @@ public class MovieDetailActivity extends AppCompatActivity {
 		mRating = findViewById(R.id.rating);
 		mMoviePoster = findViewById(R.id.movie_thumbnail);
 
-		Movie movie = (Movie) getIntent().getSerializableExtra(INTENT_EXTRA_MOVIE);
-		init(movie);
-
-
+		if (getIntent() != null && getIntent().hasExtra(INTENT_EXTRA_MOVIE)) {
+			Movie movie = getIntent().getParcelableExtra(INTENT_EXTRA_MOVIE);
+			init(movie);
+		}
 	}
 
 	private void init(Movie movie) {
