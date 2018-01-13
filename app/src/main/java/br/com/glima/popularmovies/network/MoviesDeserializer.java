@@ -39,6 +39,7 @@ public class MoviesDeserializer {
 			JSONObject jsonMovie = jsonArray.getJSONObject(i);
 
 			movies.add(new Movie(
+					jsonMovie.optString("id"),
 					jsonMovie.optString("title"),
 					jsonMovie.optString("poster_path"),
 					jsonMovie.optString("overview"),

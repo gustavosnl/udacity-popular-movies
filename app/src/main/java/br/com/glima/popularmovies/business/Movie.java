@@ -9,13 +9,20 @@ import android.os.Parcelable;
 
 public class Movie implements Parcelable {
 
+	private String id;
 	private String title;
 	private String poster;
 	private String synopsis;
 	private String rating;
 	private String releaseDate;
 
-	public Movie(String title, String poster, String synopsis, String rating, String releaseDate) {
+	public Movie(String id, String title) {
+		this.id = id;
+		this.title = title;
+	}
+
+	public Movie(String id, String title, String poster, String synopsis, String rating, String releaseDate) {
+		this.id = id;
 		this.title = title;
 		this.poster = poster;
 		this.synopsis = synopsis;
@@ -24,11 +31,25 @@ public class Movie implements Parcelable {
 	}
 
 	protected Movie(Parcel in) {
+		id = in.readString();
 		title = in.readString();
 		poster = in.readString();
 		synopsis = in.readString();
 		rating = in.readString();
 		releaseDate = in.readString();
+	}
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(id);
+		dest.writeString(title);
+		dest.writeString(poster);
+		dest.writeString(synopsis);
+		dest.writeString(rating);
+		dest.writeString(releaseDate);
+	}
+	@Override
+	public int describeContents() {
+		return 0;
 	}
 	public static final Creator<Movie> CREATOR = new Creator<Movie>() {
 		@Override
@@ -41,6 +62,11 @@ public class Movie implements Parcelable {
 			return new Movie[size];
 		}
 	};
+
+	public String getId() {
+		return id;
+	}
+
 	public String getTitle() {
 		return title;
 	}
@@ -61,16 +87,4 @@ public class Movie implements Parcelable {
 		return releaseDate;
 	}
 
-	@Override
-	public int describeContents() {
-		return 0;
-	}
-	@Override
-	public void writeToParcel(Parcel parcel, int i) {
-		parcel.writeString(title);
-		parcel.writeString(poster);
-		parcel.writeString(synopsis);
-		parcel.writeString(rating);
-		parcel.writeString(releaseDate);
-	}
 }
