@@ -77,7 +77,6 @@ public class MovieDetailActivity extends AppCompatActivity {
 		return getIntent().getParcelableExtra(INTENT_EXTRA_MOVIE);
 	}
 
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();

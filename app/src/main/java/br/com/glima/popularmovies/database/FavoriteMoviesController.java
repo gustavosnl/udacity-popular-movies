@@ -1,18 +1,20 @@
 package br.com.glima.popularmovies.database;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import br.com.glima.popularmovies.business.Movie;
 
+import static br.com.glima.popularmovies.database.FavoriteMoviesContentProviderContract.CONTENT_URI;
 import static br.com.glima.popularmovies.database.FavoriteMoviesContract.COLUMN_MOVIE_ID;
 import static br.com.glima.popularmovies.database.FavoriteMoviesContract.COLUMN_MOVIE_TITLE;
-import static br.com.glima.popularmovies.database.FavoriteMoviesContract.TABLE_NAME;
 
 /**
  * Created by gustavo.lima on 12/01/18.
@@ -20,11 +22,12 @@ import static br.com.glima.popularmovies.database.FavoriteMoviesContract.TABLE_N
 
 public class FavoriteMoviesController {
 
-	private FavoriteMoviesDbHelper dbHelper;
 	private SQLiteDatabase database;
 
+	private Context context;
+
 	public FavoriteMoviesController(Context context) {
-		dbHelper = new FavoriteMoviesDbHelper(context);
+		this.context = context;
 	}
 
 	public void addMovie(Movie movie) {
@@ -33,16 +36,15 @@ public class FavoriteMoviesController {
 		values.put(COLUMN_MOVIE_ID, movie.getId());
 		values.put(COLUMN_MOVIE_TITLE, movie.getTitle());
 
-		database = dbHelper.getWritableDatabase();
-		database.insert(TABLE_NAME, null, values);
-		database.close();
+		context.getContentResolver().insert(CONTENT_URI, values);
 	}
 
+	@SuppressLint("StaticFieldLeak")
 	public List<Movie> listAll() {
-		database = dbHelper.getReadableDatabase();
-		Cursor cursor = database.query(TABLE_NAME, null, null, null, null, null, null);
 
 		List<Movie> movies = new ArrayList<>();
+
+		Cursor cursor = context.getContentResolver().query(CONTENT_URI, null, null, null, null);
 
 		if (cursor != null) {
 			cursor.moveToFirst();
@@ -56,25 +58,19 @@ public class FavoriteMoviesController {
 			}
 			cursor.close();
 		}
-		database.close();
-
 		return movies;
 	}
 
 	public void removeMovie(Movie movie) {
-		String whereClause = COLUMN_MOVIE_ID + "=" + movie.getId();
+		Uri DELETE_URI = CONTENT_URI.buildUpon().appendPath(movie.getId()).build();
 
-		database = dbHelper.getWritableDatabase();
-		database.delete(TABLE_NAME, whereClause, null);
-		database.close();
+		context.getContentResolver().delete(DELETE_URI, null, null);
 	}
 
 	public boolean isFavorite(Movie movie) {
+		Uri IS_FAVORITE_URI = CONTENT_URI.buildUpon().appendPath(movie.getId()).build();
 
-		String whereClause = COLUMN_MOVIE_ID + "=" + movie.getId();
-
-		database = dbHelper.getReadableDatabase();
-		Cursor cursor = database.query(TABLE_NAME, null, whereClause, null, null, null, null);
+		Cursor cursor = context.getContentResolver().query(IS_FAVORITE_URI, null, null, null, null);
 		return cursor.moveToNext();
 	}
 }

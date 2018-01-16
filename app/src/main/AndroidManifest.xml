@@ -10,15 +10,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".view.MainActivity">
+        <activity
+            android:name=".view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.MovieDetailActivity"
-                  android:parentActivityName=".view.MainActivity"/>
+        <activity
+            android:name=".view.MovieDetailActivity"
+            android:parentActivityName=".view.MainActivity"/>
+
+        <provider
+            android:name=".database.FavoriteMoviesContentProvider"
+            android:authorities="br.com.glima.popularmovies"
+            android:exported="false"/>
     </application>
 
 </manifest>
