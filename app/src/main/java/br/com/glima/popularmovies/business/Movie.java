@@ -11,9 +11,9 @@ public class Movie implements Parcelable {
 
 	private String id;
 	private String title;
-	private String poster;
-	private String synopsis;
-	private String rating;
+	private String posterPath;
+	private String overview;
+	private String voteAverage;
 	private String releaseDate;
 
 	public Movie(String id, String title) {
@@ -24,27 +24,27 @@ public class Movie implements Parcelable {
 	public Movie(String id, String title, String poster, String synopsis, String rating, String releaseDate) {
 		this.id = id;
 		this.title = title;
-		this.poster = poster;
-		this.synopsis = synopsis;
-		this.rating = rating;
+		this.posterPath = poster;
+		this.overview = synopsis;
+		this.voteAverage = rating;
 		this.releaseDate = releaseDate;
 	}
 
 	protected Movie(Parcel in) {
 		id = in.readString();
 		title = in.readString();
-		poster = in.readString();
-		synopsis = in.readString();
-		rating = in.readString();
+		posterPath = in.readString();
+		overview = in.readString();
+		voteAverage = in.readString();
 		releaseDate = in.readString();
 	}
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(id);
 		dest.writeString(title);
-		dest.writeString(poster);
-		dest.writeString(synopsis);
-		dest.writeString(rating);
+		dest.writeString(posterPath);
+		dest.writeString(overview);
+		dest.writeString(voteAverage);
 		dest.writeString(releaseDate);
 	}
 	@Override
@@ -71,16 +71,16 @@ public class Movie implements Parcelable {
 		return title;
 	}
 
-	public String getPoster() {
-		return poster;
+	public String getPosterPath() {
+		return posterPath;
 	}
 
-	public String getSynopsis() {
-		return synopsis;
+	public String getOverview() {
+		return overview;
 	}
 
-	public String getRating() {
-		return rating;
+	public String getVoteAverage() {
+		return voteAverage;
 	}
 
 	public String getReleaseDate() {

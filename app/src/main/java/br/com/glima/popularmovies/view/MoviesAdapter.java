@@ -1,5 +1,6 @@
 package br.com.glima.popularmovies.view;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,6 @@ import java.util.List;
 
 import br.com.glima.popularmovies.R;
 import br.com.glima.popularmovies.business.Movie;
-import br.com.glima.popularmovies.network.PathBuilder;
 
 /**
  * Created by gustavo.lima on 22/12/17.
@@ -22,9 +22,11 @@ import br.com.glima.popularmovies.network.PathBuilder;
 class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieItemViewHolder> {
 
 	private List<Movie> movies = new ArrayList<>();
+	private Context context;
 	private MovieClickListener clickListener;
 
-	public MoviesAdapter(MovieClickListener listener) {
+	public MoviesAdapter(Context context, MovieClickListener listener) {
+		this.context = context;
 		clickListener = listener;
 	}
 
@@ -75,7 +77,8 @@ class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieItemViewHold
 		}
 
 		private String buildPosterUrl(Movie movie) {
-			return PathBuilder.buildImageURL(movie.getPoster());
+			return context.getString(R.string.image_api_url, movie.getPosterPath());
+
 		}
 
 		@Override

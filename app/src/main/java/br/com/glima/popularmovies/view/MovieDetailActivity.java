@@ -11,13 +11,9 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import br.com.glima.popularmovies.R;
 import br.com.glima.popularmovies.business.Movie;
 import br.com.glima.popularmovies.database.FavoriteMoviesController;
-
-import static br.com.glima.popularmovies.network.PathBuilder.buildImageURL;
 
 /**
  * Created by gustavo.lima on 24/12/17.
@@ -64,13 +60,13 @@ public class MovieDetailActivity extends AppCompatActivity {
 
 	private void init(Movie movie) {
 		mTitle.setText(movie.getTitle());
-		mSynopsis.setText(movie.getSynopsis());
-		mRating.setText(movie.getRating());
+		mSynopsis.setText(movie.getOverview());
+		mRating.setText(movie.getVoteAverage());
 		mReleaseDate.setText(movie.getReleaseDate());
 
-		Picasso.with(this)
-				.load(buildImageURL(movie.getPoster()))
-				.into(mMoviePoster);
+//		Picasso.with(this)
+//				.load(buildImageURL(movie.getPosterPath()))
+//				.into(mMoviePoster);
 	}
 
 	private Movie getMovieFromIntent() {

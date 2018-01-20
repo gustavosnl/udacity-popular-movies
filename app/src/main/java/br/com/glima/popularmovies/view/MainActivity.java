@@ -10,25 +10,31 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.util.List;
 
 import br.com.glima.popularmovies.R;
 import br.com.glima.popularmovies.business.Movie;
-import br.com.glima.popularmovies.network.LoadPopularMoviesTask;
-import br.com.glima.popularmovies.network.LoadTopRatedMoviesTask;
-import br.com.glima.popularmovies.network.MoviesCallBack;
+import br.com.glima.popularmovies.network.MovieDBApiClient;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
-public class MainActivity extends AppCompatActivity implements MoviesCallBack, MovieClickListener {
+import static io.reactivex.android.schedulers.AndroidSchedulers.mainThread;
+
+public class MainActivity extends AppCompatActivity implements Observer<List<Movie>>, MovieClickListener {
 
 	private RecyclerView mList;
 	private ProgressBar mProgress;
-	private MoviesAdapter mMoviesAdapter = new MoviesAdapter(this);
+	private MoviesAdapter mMoviesAdapter = new MoviesAdapter(this, this);
+	private MovieDBApiClient apiClient;
 
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		apiClient = new MovieDBApiClient(this);
 
 		mProgress = findViewById(R.id.progress_bar);
 		mList = findViewById(R.id.movies_list);
@@ -39,24 +45,15 @@ public class MainActivity extends AppCompatActivity implements MoviesCallBack, M
 	}
 
 	private void doPopularMoviesRequest() {
-		new LoadPopularMoviesTask(this).execute();
+		apiClient.fetchPopularMovies()
+				.observeOn(mainThread())
+				.subscribe(this);
 	}
 
 	private void doTopRatedMoviesRequest() {
-		new LoadTopRatedMoviesTask(this).execute();
-	}
-
-	@Override
-	public void onFetchMoviesCompleted(List<Movie> movies) {
-		mProgress.setVisibility(View.GONE);
-		mMoviesAdapter.addItems(movies);
-		mList.setVisibility(View.VISIBLE);
-	}
-	@Override
-	public void onFetchMoviesStarted() {
-		mMoviesAdapter.clear();
-		mProgress.setVisibility(View.VISIBLE);
-		mList.setVisibility(View.GONE);
+		apiClient.fetchTopRatedMovies()
+				.observeOn(mainThread())
+				.subscribe(this);
 	}
 
 	private void doRequest() {
@@ -87,5 +84,28 @@ public class MainActivity extends AppCompatActivity implements MoviesCallBack, M
 				break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onSubscribe(Disposable d) {
+		mMoviesAdapter.clear();
+		mProgress.setVisibility(View.VISIBLE);
+		mList.setVisibility(View.GONE);
+	}
+
+	@Override
+	public void onNext(List<Movie> movies) {
+		mMoviesAdapter.addItems(movies);
+	}
+
+	@Override
+	public void onError(Throwable e) {
+		Toast.makeText(this, getString(R.string.load_error), Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void onComplete() {
+		mProgress.setVisibility(View.GONE);
+		mList.setVisibility(View.VISIBLE);
 	}
 }
