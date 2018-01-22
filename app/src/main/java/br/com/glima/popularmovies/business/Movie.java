@@ -3,6 +3,11 @@ package br.com.glima.popularmovies.business;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 /**
  * Created by gustavo.lima on 18/12/17.
  */
@@ -12,6 +17,7 @@ public class Movie implements Parcelable {
 	private String id;
 	private String title;
 	private String posterPath;
+	private String runtime;
 	private String overview;
 	private String voteAverage;
 	private String releaseDate;
@@ -21,19 +27,11 @@ public class Movie implements Parcelable {
 		this.title = title;
 	}
 
-	public Movie(String id, String title, String poster, String synopsis, String rating, String releaseDate) {
-		this.id = id;
-		this.title = title;
-		this.posterPath = poster;
-		this.overview = synopsis;
-		this.voteAverage = rating;
-		this.releaseDate = releaseDate;
-	}
-
 	protected Movie(Parcel in) {
 		id = in.readString();
 		title = in.readString();
 		posterPath = in.readString();
+		runtime = in.readString();
 		overview = in.readString();
 		voteAverage = in.readString();
 		releaseDate = in.readString();
@@ -43,6 +41,7 @@ public class Movie implements Parcelable {
 		dest.writeString(id);
 		dest.writeString(title);
 		dest.writeString(posterPath);
+		dest.writeString(runtime);
 		dest.writeString(overview);
 		dest.writeString(voteAverage);
 		dest.writeString(releaseDate);
@@ -62,7 +61,6 @@ public class Movie implements Parcelable {
 			return new Movie[size];
 		}
 	};
-
 	public String getId() {
 		return id;
 	}
@@ -84,7 +82,28 @@ public class Movie implements Parcelable {
 	}
 
 	public String getReleaseDate() {
-		return releaseDate;
+		SimpleDateFormat RAW_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+		SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMM/dd/yyyy", Locale.US);
+
+		try {
+			Date rawDate = RAW_DATE_FORMAT.parse(releaseDate);
+			return DATE_FORMAT.format(rawDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return releaseDate;
+		}
 	}
 
+	public String getRuntime() {
+		SimpleDateFormat MINUTES_DATE_FORMAT = new SimpleDateFormat("mm", Locale.US);
+		SimpleDateFormat HOUR_MINUTES_DATE_FORMAT = new SimpleDateFormat("HH:mm:ss", Locale.US);
+
+		try {
+			Date minutes = MINUTES_DATE_FORMAT.parse(runtime);
+			return HOUR_MINUTES_DATE_FORMAT.format(minutes);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return runtime;
+		}
+	}
 }

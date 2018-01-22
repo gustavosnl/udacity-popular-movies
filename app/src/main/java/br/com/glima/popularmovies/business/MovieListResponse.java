@@ -6,7 +6,7 @@ import java.util.List;
  * Created by gustavo.lima on 20/01/18.
  */
 
-public class MovieResponse {
+public class MovieListResponse {
 
 	private List<Movie> results;
 
