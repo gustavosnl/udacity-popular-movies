@@ -61,14 +61,14 @@ public class FavoriteMoviesController {
 		return movies;
 	}
 
-	public void removeMovie(Movie movie) {
-		Uri DELETE_URI = CONTENT_URI.buildUpon().appendPath(movie.getId()).build();
+	public void removeMovie(String movieId) {
+		Uri DELETE_URI = CONTENT_URI.buildUpon().appendPath(movieId).build();
 
 		context.getContentResolver().delete(DELETE_URI, null, null);
 	}
 
-	public boolean isFavorite(Movie movie) {
-		Uri IS_FAVORITE_URI = CONTENT_URI.buildUpon().appendPath(movie.getId()).build();
+	public boolean isFavorite(String movieId) {
+		Uri IS_FAVORITE_URI = CONTENT_URI.buildUpon().appendPath(movieId).build();
 
 		Cursor cursor = context.getContentResolver().query(IS_FAVORITE_URI, null, null, null, null);
 		return cursor.moveToNext();
