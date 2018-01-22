@@ -3,6 +3,14 @@
     <string name="sort_popular">Most popular</string>
     <string name="sort_top_rated">Top rated</string>
     <string name="label_synopsis">Sinopsys:</string>
-    <string name="movie_db_api"/>
     <string name="load_error">Something went wrong :(</string>
+
+    <string name="really_large_description">Lorem ipsum dolor sit amet, viris mentitum invenire mel id. Has ad dicta suavitate, salutandi maluisset mea ea. Graeci omnesque
+        sapientem at his, vim ut decore oporteat. Novum feugait phaedrum eu mei. Ea mei affert adipisci.
+
+        Eum id utinam denique repudiare, vis noster vivendum id. Tota eripuit omittantur et eos, ius an dico sonet nonumes. Eum no nonumy dissentiet, ceteros volumus inimicus et
+        cum. Mel diam nominati explicari cu. Idque utamur aliquid pro ex, ne errem labores voluptaria sed, brute corrumpit sed id.
+    </string>
+    <string name="label_reviews">Reviews</string>
+    <string name="label_videos">Videos</string>
 </resources>
