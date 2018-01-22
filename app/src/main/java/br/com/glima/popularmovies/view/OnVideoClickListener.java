@@ -5,4 +5,5 @@ package br.com.glima.popularmovies.view;
  */
 
 interface OnVideoClickListener {
+	void onVideoClicked(String key);
 }

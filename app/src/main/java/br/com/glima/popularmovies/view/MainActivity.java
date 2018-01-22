@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Mov
 
 	@Override
 	public void onMovieClicked(Movie movie) {
-		startActivity(MovieDetailActivity.newIntent(this, movie));
+		startActivity(MovieDetailActivity.newIntent(this, movie.getId()));
 	}
 
 	@Override
