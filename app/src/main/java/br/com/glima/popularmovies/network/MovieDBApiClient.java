@@ -10,9 +10,13 @@ import java.util.List;
 import br.com.glima.popularmovies.BuildConfig;
 import br.com.glima.popularmovies.R;
 import br.com.glima.popularmovies.business.Movie;
-import br.com.glima.popularmovies.business.MovieResponse;
+import br.com.glima.popularmovies.business.MovieDetail;
+import br.com.glima.popularmovies.business.MovieListResponse;
+import br.com.glima.popularmovies.business.ReviewsResponse;
+import br.com.glima.popularmovies.business.VideosResponse;
 import io.reactivex.Observable;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Function3;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -46,28 +50,46 @@ public class MovieDBApiClient {
 
 	}
 
-
 	public Observable<List<Movie>> fetchPopularMovies() {
 		return apiService.fetchPopularMovies(API_KEY)
 				.subscribeOn(Schedulers.io())
-				.map(new Function<MovieResponse, List<Movie>>() {
+				.map(new Function<MovieListResponse, List<Movie>>() {
 					@Override
-					public List<Movie> apply(MovieResponse movieResponse) throws Exception {
+					public List<Movie> apply(MovieListResponse movieResponse) throws Exception {
 						return movieResponse.getResults();
 					}
 				});
 	}
+
 	public Observable<List<Movie>> fetchTopRatedMovies() {
-		return null;
+		return apiService.fetchTopRatedMovies(API_KEY)
+				.subscribeOn(Schedulers.io())
+				.map(new Function<MovieListResponse, List<Movie>>() {
+					@Override
+					public List<Movie> apply(MovieListResponse movieResponse) throws Exception {
+						return movieResponse.getResults();
+					}
+				});
 	}
-	public Observable<Movie> fetchMovieDetails(String movieId) {
-		return null;
+	public Observable<MovieDetail> fetchMovieDetails(String movieId) {
+		return Observable.zip(fetchMovie(movieId), fetchMovieReviews(movieId), fetchMovieTrailers(movieId),
+				new Function3<Movie, ReviewsResponse, VideosResponse, MovieDetail>() {
+					@Override
+					public MovieDetail apply(Movie movie, ReviewsResponse reviewsResponse, VideosResponse videosResponse) throws Exception {
+						return new MovieDetail(movie, reviewsResponse.getResults(), videosResponse.getVideos());
+					}
+				}).subscribeOn(Schedulers.io());
 	}
-	public Observable<Movie> fetchMovieTrailers(String movieId) {
-		return null;
+
+	private Observable<VideosResponse> fetchMovieTrailers(String movieId) {
+		return apiService.fetchMovieTrailers(movieId, API_KEY);
 	}
-	public Observable<Movie> fetchMovieReviews(String movieId) {
-		return null;
+	private Observable<ReviewsResponse> fetchMovieReviews(String movieId) {
+		return apiService.fetchMovieReviews(movieId, API_KEY);
+	}
+
+	private Observable<Movie> fetchMovie(String movieId) {
+		return apiService.fetchMovieDetails(movieId, API_KEY);
 	}
 
 	private OkHttpClient setupHttpClient() {
