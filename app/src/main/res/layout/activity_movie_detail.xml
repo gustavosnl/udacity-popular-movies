@@ -16,6 +16,7 @@
             android:layout_height="wrap_content"
             tools:layout_editor_absoluteY="81dp">
 
+
             <ImageView
                 android:id="@+id/moviePoster"
                 android:layout_width="126dp"

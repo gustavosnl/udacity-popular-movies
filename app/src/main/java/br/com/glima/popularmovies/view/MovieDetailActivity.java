@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import br.com.glima.popularmovies.R;
 import br.com.glima.popularmovies.business.MovieDetail;
@@ -54,14 +55,14 @@ public class MovieDetailActivity extends AppCompatActivity implements Observer<M
 		binding.videosList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 		binding.videosList.addItemDecoration(new DividerItemDecoration(this));
 
-		movieDBApiService.fetchMovieDetails(getMovieFromIntent()).observeOn(AndroidSchedulers.mainThread()).subscribe(this);
+		movieDBApiService.fetchMovieDetails(getMovieIdFromIntent()).observeOn(AndroidSchedulers.mainThread()).subscribe(this);
 	}
 
 	private boolean hasMovieIntentExtra() {
 		return getIntent() != null && getIntent().hasExtra(INTENT_EXTRA_MOVIE_ID);
 	}
 
-	private String getMovieFromIntent() {
+	private String getMovieIdFromIntent() {
 		return getIntent().getStringExtra(INTENT_EXTRA_MOVIE_ID);
 	}
 
@@ -85,7 +86,7 @@ public class MovieDetailActivity extends AppCompatActivity implements Observer<M
 
 	private void setUpFavoriteMenuItem(MenuItem favoriteItem) {
 		if (hasMovieIntentExtra()) {
-			if (favoriteMoviesController.isFavorite(getMovieFromIntent())) {
+			if (favoriteMoviesController.isFavorite(getMovieIdFromIntent())) {
 				favoriteItem.setIcon(R.drawable.ic_favorite_filled);
 			} else {
 				favoriteItem.setIcon(R.drawable.ic_favorite_stroke);
@@ -95,12 +96,14 @@ public class MovieDetailActivity extends AppCompatActivity implements Observer<M
 
 	private void UpdateFavoriteMenuItem(MenuItem favoriteItem) {
 		if (hasMovieIntentExtra()) {
-			if (favoriteMoviesController.isFavorite(getMovieFromIntent())) {
-				favoriteMoviesController.removeMovie(getMovieFromIntent());
+			if (favoriteMoviesController.isFavorite(getMovieIdFromIntent())) {
+				favoriteMoviesController.removeMovie(getMovieIdFromIntent());
 				favoriteItem.setIcon(R.drawable.ic_favorite_stroke);
 			} else {
-//				favoriteMoviesController.addMovie(getMovieFromIntent());
-				favoriteItem.setIcon(R.drawable.ic_favorite_filled);
+				if (binding.getMovie() != null) {
+					favoriteMoviesController.addMovie(binding.getMovie().getMovie());
+					favoriteItem.setIcon(R.drawable.ic_favorite_filled);
+				}
 			}
 		}
 	}
@@ -109,6 +112,7 @@ public class MovieDetailActivity extends AppCompatActivity implements Observer<M
 	public void onSubscribe(Disposable d) {
 
 	}
+
 	@Override
 	public void onNext(MovieDetail movieDetail) {
 
@@ -120,13 +124,14 @@ public class MovieDetailActivity extends AppCompatActivity implements Observer<M
 
 	@Override
 	public void onError(Throwable e) {
-
+		Toast.makeText(this, R.string.load_error, Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	public void onComplete() {
 
 	}
+
 	@Override
 	public void onVideoClicked(String key) {
 

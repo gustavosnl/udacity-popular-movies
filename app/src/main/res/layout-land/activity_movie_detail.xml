@@ -30,8 +30,10 @@
                 android:id="@+id/synopsisLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="19dp"
-                android:layout_marginTop="8dp" android:text="@string/label_synopsis"
-                app:layout_constraintStart_toStartOf="@+id/movieTitle" app:layout_constraintTop_toBottomOf="@+id/movieTitle"/>
+                android:layout_marginTop="8dp"
+                android:text="@string/label_synopsis"
+                app:layout_constraintStart_toStartOf="@+id/movieTitle"
+                app:layout_constraintTop_toBottomOf="@+id/movieTitle"/>
 
             <TextView
                 android:id="@+id/textView6"
@@ -63,8 +65,10 @@
                 android:id="@+id/calendar"
                 android:layout_width="wrap_content"
                 android:layout_height="24dp"
-                android:layout_marginTop="8dp" app:layout_constraintStart_toStartOf="@+id/clock"
-                app:layout_constraintTop_toBottomOf="@+id/clock" app:srcCompat="@drawable/ic_calendar"/>
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="@+id/clock"
+                app:layout_constraintTop_toBottomOf="@+id/clock"
+                app:srcCompat="@drawable/ic_calendar"/>
 
             <TextView
                 android:id="@+id/releaseDate"
@@ -75,7 +79,9 @@
                 android:text="@{movie.movie.releaseDate}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textSize="18sp"
-                app:layout_constraintStart_toEndOf="@+id/calendar" app:layout_constraintTop_toTopOf="@+id/calendar" tools:text="21/12/2020"/>
+                app:layout_constraintStart_toEndOf="@+id/calendar"
+                app:layout_constraintTop_toTopOf="@+id/calendar"
+                tools:text="21/12/2020"/>
 
             <ImageView
                 android:id="@+id/divider"
@@ -85,7 +91,9 @@
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@+id/calendar" app:srcCompat="@color/divider"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/calendar"
+                app:srcCompat="@color/divider"/>
 
             <TextView
                 android:id="@+id/videos"
@@ -103,10 +111,12 @@
 
             <ImageView
                 android:id="@+id/icVideo"
-                android:layout_width="wrap_content" android:layout_height="24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="@+id/calendar"
-                app:layout_constraintTop_toBottomOf="@+id/divider" app:srcCompat="@drawable/ic_play_filled"/>
+                app:layout_constraintTop_toBottomOf="@+id/divider"
+                app:srcCompat="@drawable/ic_play_filled"/>
 
             <ImageView
                 android:id="@+id/imageView7"
@@ -133,11 +143,16 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp" android:fontFamily="sans-serif-condensed" android:gravity="top|left"
-                android:includeFontPadding="false" android:text="@{movie.movie.title}"
+                android:layout_marginStart="8dp"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="top|left"
+                android:includeFontPadding="false"
+                android:text="@{movie.movie.title}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toEndOf="@+id/moviePoster"
-                app:layout_constraintTop_toTopOf="@+id/moviePoster" tools:text="Long movie title with lines"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/moviePoster"
+                app:layout_constraintTop_toTopOf="@+id/moviePoster"
+                tools:text="Long movie title with lines"/>
 
             <TextView
                 android:id="@+id/textView8"
@@ -161,7 +176,9 @@
                 android:layout_marginTop="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0" app:layout_constraintStart_toStartOf="@+id/imageView8" app:layout_constraintTop_toBottomOf="@+id/imageView8"/>
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/imageView8"
+                app:layout_constraintTop_toBottomOf="@+id/imageView8"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/videosList"
@@ -174,25 +191,37 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/icVideo"/>
+
             <ImageView
                 android:id="@+id/clock"
-                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                app:layout_constraintStart_toStartOf="@+id/star" app:layout_constraintTop_toBottomOf="@+id/star" app:srcCompat="@drawable/ic_time"/>
+                app:layout_constraintStart_toStartOf="@+id/star"
+                app:layout_constraintTop_toBottomOf="@+id/star"
+                app:srcCompat="@drawable/ic_time"/>
             <TextView
                 android:id="@+id/textView9"
                 android:layout_width="wrap_content"
-                android:layout_height="24dp" android:layout_marginStart="4dp" android:gravity="center_vertical"
-                android:text="@{movie.movie.runtime}" android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:textSize="18sp" app:layout_constraintBottom_toBottomOf="@+id/clock" app:layout_constraintStart_toEndOf="@+id/clock"
+                android:layout_height="24dp"
+                android:layout_marginStart="4dp"
+                android:gravity="center_vertical"
+                android:text="@{movie.movie.runtime}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/clock"
+                app:layout_constraintStart_toEndOf="@+id/clock"
                 app:layout_constraintTop_toTopOf="@+id/clock"
                 tools:text="2:42:00"/>
+
             <ImageView
                 android:id="@+id/star"
                 android:layout_width="wrap_content"
                 android:layout_height="24dp"
-                android:layout_marginTop="8dp" app:layout_constraintStart_toStartOf="@+id/moviePoster"
-                app:layout_constraintTop_toBottomOf="@+id/moviePoster" app:srcCompat="@drawable/ic_star"/>
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="@+id/moviePoster"
+                app:layout_constraintTop_toBottomOf="@+id/moviePoster"
+                app:srcCompat="@drawable/ic_star"/>
         </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.NestedScrollView>
 </layout>

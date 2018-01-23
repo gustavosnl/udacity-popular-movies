@@ -13,4 +13,5 @@
     </string>
     <string name="label_reviews">Reviews</string>
     <string name="label_videos">Videos</string>
+    <string name="sort_favorites">Favorites</string>
 </resources>
