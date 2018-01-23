@@ -32,6 +32,7 @@ import io.reactivex.disposables.Disposable;
 public class MovieDetailActivity extends AppCompatActivity implements Observer<MovieDetail>, OnVideoClickListener {
 
 	private static final String INTENT_EXTRA_MOVIE_ID = "intent_extra_movie_id";
+	private static final String MOVIE_DETAIL_STATE = "movie_detail_state";
 
 	private FavoriteMoviesController favoriteMoviesController;
 	private MovieDBApiClient movieDBApiService;
@@ -58,8 +59,19 @@ public class MovieDetailActivity extends AppCompatActivity implements Observer<M
 		binding.videosList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 		binding.videosList.addItemDecoration(new DividerItemDecoration(this));
 
-		loadMovie();
+		if (savedInstanceState != null) {
+			binding.setMovie((MovieDetail) savedInstanceState.getParcelable(MOVIE_DETAIL_STATE));
+		} else {
+			loadMovie();
+		}
 	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		outState.putParcelable(MOVIE_DETAIL_STATE, binding.getMovie());
+		super.onSaveInstanceState(outState);
+	}
+
 
 	private boolean hasNetworkConnection() {
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
