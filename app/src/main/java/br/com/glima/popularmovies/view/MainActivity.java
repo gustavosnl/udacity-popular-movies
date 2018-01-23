@@ -56,6 +56,12 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Mov
 				.subscribe(this);
 	}
 
+	private void doFavoriteMoviesRequest() {
+		apiClient.fetchFavoriteMovies()
+				.observeOn(mainThread())
+				.subscribe(this);
+	}
+
 	private void doRequest() {
 		doPopularMoviesRequest();
 	}
@@ -82,6 +88,8 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Mov
 			case R.id.sort_top_rated:
 				doTopRatedMoviesRequest();
 				break;
+			case R.id.sort_favorites:
+				doFavoriteMoviesRequest();
 		}
 		return super.onOptionsItemSelected(item);
 	}

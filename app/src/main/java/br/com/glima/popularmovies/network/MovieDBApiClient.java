@@ -14,6 +14,7 @@ import br.com.glima.popularmovies.business.MovieDetail;
 import br.com.glima.popularmovies.business.MovieListResponse;
 import br.com.glima.popularmovies.business.ReviewsResponse;
 import br.com.glima.popularmovies.business.VideosResponse;
+import br.com.glima.popularmovies.database.FavoriteMoviesController;
 import io.reactivex.Observable;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Function3;
@@ -34,9 +35,12 @@ import static okhttp3.logging.HttpLoggingInterceptor.Level.NONE;
 public class MovieDBApiClient {
 
 	private MovieDBApiService apiService;
+	private FavoriteMoviesController controller;
 	private String API_KEY;
 
 	public MovieDBApiClient(Context context) {
+
+		controller = new FavoriteMoviesController(context);
 
 		Retrofit retrofit = new Retrofit.Builder()
 				.baseUrl(context.getString(R.string.movie_api_url))
@@ -71,6 +75,11 @@ public class MovieDBApiClient {
 					}
 				});
 	}
+
+	public Observable<List<Movie>> fetchFavoriteMovies() {
+		return Observable.just(controller.listAll());
+	}
+
 	public Observable<MovieDetail> fetchMovieDetails(String movieId) {
 		return Observable.zip(fetchMovie(movieId), fetchMovieReviews(movieId), fetchMovieTrailers(movieId),
 				new Function3<Movie, ReviewsResponse, VideosResponse, MovieDetail>() {
@@ -84,6 +93,7 @@ public class MovieDBApiClient {
 	private Observable<VideosResponse> fetchMovieTrailers(String movieId) {
 		return apiService.fetchMovieTrailers(movieId, API_KEY);
 	}
+
 	private Observable<ReviewsResponse> fetchMovieReviews(String movieId) {
 		return apiService.fetchMovieReviews(movieId, API_KEY);
 	}
@@ -107,4 +117,5 @@ public class MovieDBApiClient {
 
 		return GsonConverterFactory.create(gson.create());
 	}
+
 }
