@@ -60,7 +60,7 @@ public class MovieDetailActivity extends AppCompatActivity implements Observer<M
 		binding.videosList.addItemDecoration(new DividerItemDecoration(this));
 
 		if (savedInstanceState != null) {
-			binding.setMovie((MovieDetail) savedInstanceState.getParcelable(MOVIE_DETAIL_STATE));
+			onNext((MovieDetail) savedInstanceState.getParcelable(MOVIE_DETAIL_STATE));
 		} else {
 			loadMovie();
 		}
@@ -121,7 +121,7 @@ public class MovieDetailActivity extends AppCompatActivity implements Observer<M
 		ShareCompat.IntentBuilder.from(this)
 				.setType("text/plain")
 				.setChooserTitle(getString(R.string.share_chooser_title))
-				.setText(getString(R.string.youtube, binding.getMovie().getMainTrailerKey()))
+				.setText(getString(R.string.youtube_uri, binding.getMovie().getMainTrailerKey()))
 				.startChooser();
 	}
 
@@ -178,11 +178,13 @@ public class MovieDetailActivity extends AppCompatActivity implements Observer<M
 
 	@Override
 	public void onVideoClicked(String key) {
+		Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.youtube_url, key)));
+		Intent youtubeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.youtube_uri, key)));
 
-		Intent youtubeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.youtube, key)));
 		if (youtubeIntent.resolveActivity(getPackageManager()) != null) {
 			startActivity(youtubeIntent);
+		} else {
+			startActivity(webIntent);
 		}
-
 	}
 }

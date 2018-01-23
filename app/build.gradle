@@ -10,10 +10,27 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    //snippet taken from http://samwolfand.com/blog/2016/5/6/hiding-api-keys-with-gradle
+    //as code-review suggestion :D
+
+    Properties props = new Properties()
+    File propsFile = file('custom.properties')
+    if (propsFile.exists()) {
+        props.load(propsFile.newDataInputStream())
+    } else if (System.env.API_KEY != null) {
+        props.setProperty("movieDB.apiKey", System.env.API_KEY)
+    } else {
+        throw new GradleException("Missing custom.properties, check the custom.properties")
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            it.buildConfigField "String", "API_KEY", "\"${props.getProperty("movieDB.apiKey")}\""
         }
     }
     dataBinding {

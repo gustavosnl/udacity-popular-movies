@@ -1,5 +1,6 @@
 package br.com.glima.popularmovies.view;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -24,10 +25,12 @@ import static io.reactivex.android.schedulers.AndroidSchedulers.mainThread;
 
 public class MainActivity extends AppCompatActivity implements Observer<List<Movie>>, MovieClickListener {
 
+	public static final String LAST_SORT = "last_sort";
 	private RecyclerView mList;
 	private ProgressBar mProgress;
 	private MoviesAdapter mMoviesAdapter = new MoviesAdapter(this, this);
 	private MovieDBApiClient apiClient;
+	private SharedPreferences preferences;
 
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,7 +44,8 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Mov
 		mList.setLayoutManager(new GridLayoutManager(this, getResources().getInteger(R.integer.column_span_count)));
 		mList.setAdapter(mMoviesAdapter);
 
-		doRequest();
+		preferences = getPreferences(MODE_PRIVATE);
+		doRequest(preferences.getInt(LAST_SORT, R.id.sort_popular));
 	}
 
 	private void doPopularMoviesRequest() {
@@ -62,8 +66,18 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Mov
 				.subscribe(this);
 	}
 
-	private void doRequest() {
-		doPopularMoviesRequest();
+	private void doRequest(int requestCode) {
+		switch (requestCode) {
+			case R.id.sort_popular:
+				doPopularMoviesRequest();
+				break;
+			case R.id.sort_top_rated:
+				doTopRatedMoviesRequest();
+				break;
+			case R.id.sort_favorites:
+				doFavoriteMoviesRequest();
+				break;
+		}
 	}
 
 	@Override
@@ -80,17 +94,8 @@ public class MainActivity extends AppCompatActivity implements Observer<List<Mov
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-
-		switch (item.getItemId()) {
-			case R.id.sort_popular:
-				doPopularMoviesRequest();
-				break;
-			case R.id.sort_top_rated:
-				doTopRatedMoviesRequest();
-				break;
-			case R.id.sort_favorites:
-				doFavoriteMoviesRequest();
-		}
+		preferences.edit().putInt(LAST_SORT, item.getItemId()).apply();
+		doRequest(item.getItemId());
 		return super.onOptionsItemSelected(item);
 	}
 

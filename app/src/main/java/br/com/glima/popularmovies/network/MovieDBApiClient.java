@@ -25,6 +25,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static br.com.glima.popularmovies.BuildConfig.API_KEY;
 import static okhttp3.logging.HttpLoggingInterceptor.Level.BODY;
 import static okhttp3.logging.HttpLoggingInterceptor.Level.NONE;
 
@@ -36,7 +37,6 @@ public class MovieDBApiClient {
 
 	private MovieDBApiService apiService;
 	private FavoriteMoviesController controller;
-	private String API_KEY;
 
 	public MovieDBApiClient(Context context) {
 
@@ -50,12 +50,11 @@ public class MovieDBApiClient {
 				.build();
 
 		apiService = retrofit.create(MovieDBApiService.class);
-		API_KEY = context.getString(R.string.api_key);
 
 	}
 
 	public Observable<List<Movie>> fetchPopularMovies() {
-		return apiService.fetchPopularMovies(API_KEY)
+		return apiService.fetchMovies("popular", API_KEY)
 				.subscribeOn(Schedulers.io())
 				.map(new Function<MovieListResponse, List<Movie>>() {
 					@Override
@@ -66,7 +65,7 @@ public class MovieDBApiClient {
 	}
 
 	public Observable<List<Movie>> fetchTopRatedMovies() {
-		return apiService.fetchTopRatedMovies(API_KEY)
+		return apiService.fetchMovies("top_rated", API_KEY)
 				.subscribeOn(Schedulers.io())
 				.map(new Function<MovieListResponse, List<Movie>>() {
 					@Override

@@ -14,19 +14,15 @@ import retrofit2.http.Query;
  */
 
 public interface MovieDBApiService {
+	@GET("movie/{sort_criteria}")
+	Observable<MovieListResponse> fetchMovies(@Path("sort_criteria") String criteria, @Query("api_key") String apiKey);
 
-	@GET("movie/popular")
-	Observable<MovieListResponse> fetchPopularMovies(@Query("api_key") String apiKey);
+	@GET("movie/{movie_id}")
+	Observable<Movie> fetchMovieDetails(@Path("movie_id") String movieId, @Query("api_key") String apiKey);
 
-	@GET("movie/top_rated")
-	Observable<MovieListResponse> fetchTopRatedMovies(@Query("api_key") String apiKey);
+	@GET("movie/{movie_id}/videos")
+	Observable<VideosResponse> fetchMovieTrailers(@Path("movie_id") String movieId, @Query("api_key") String apiKey);
 
-	@GET("movie/{movieId}")
-	Observable<Movie> fetchMovieDetails(@Path("movieId") String movieId, @Query("api_key") String apiKey);
-
-	@GET("movie/{movieId}/videos")
-	Observable<VideosResponse> fetchMovieTrailers(@Path("movieId") String movieId, @Query("api_key") String apiKey);
-
-	@GET("movie/{movieId}/reviews")
-	Observable<ReviewsResponse> fetchMovieReviews(@Path("movieId") String movieId, @Query("api_key") String apiKey);
+	@GET("movie/{movie_id}/reviews")
+	Observable<ReviewsResponse> fetchMovieReviews(@Path("movie_id") String movieId, @Query("api_key") String apiKey);
 }

@@ -40,11 +40,11 @@ public class FavoriteMoviesController {
 
 		values.put(COLUMN_MOVIE_ID, movie.getId());
 		values.put(COLUMN_MOVIE_TITLE, movie.getTitle());
+		values.put(COLUMN_MOVIE_POSTER, movie.getPosterPath());
 		values.put(COLUMN_MOVIE_SYNOPSIS, movie.getOverview());
+		values.put(COLUMN_MOVIE_LENGTH, movie.getRawRuntime());
 		values.put(COLUMN_MOVIE_RATING, movie.getVoteAverage());
 		values.put(COLUMN_MOVIE_RELEASE, movie.getReleaseDate());
-		values.put(COLUMN_MOVIE_LENGTH, movie.getRawRuntime());
-		values.put(COLUMN_MOVIE_POSTER, movie.getPosterPath());
 
 		context.getContentResolver().insert(CONTENT_URI, values);
 	}

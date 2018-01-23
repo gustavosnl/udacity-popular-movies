@@ -8,6 +8,7 @@
     </data>
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nested_scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -15,7 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:layout_editor_absoluteY="81dp">
-
 
             <ImageView
                 android:id="@+id/moviePoster"
