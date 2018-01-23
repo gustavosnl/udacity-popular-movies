@@ -22,9 +22,14 @@ public class Movie implements Parcelable {
 	private String voteAverage;
 	private String releaseDate;
 
-	public Movie(String id, String title) {
+	public Movie(String id, String title, String posterPath, String runtime, String overview, String voteAverage, String releaseDate) {
 		this.id = id;
 		this.title = title;
+		this.posterPath = posterPath;
+		this.runtime = runtime;
+		this.overview = overview;
+		this.voteAverage = voteAverage;
+		this.releaseDate = releaseDate;
 	}
 
 	protected Movie(Parcel in) {

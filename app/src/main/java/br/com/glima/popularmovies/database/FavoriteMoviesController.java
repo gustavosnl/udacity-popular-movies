@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +14,11 @@ import br.com.glima.popularmovies.business.Movie;
 
 import static br.com.glima.popularmovies.database.FavoriteMoviesContentProviderContract.CONTENT_URI;
 import static br.com.glima.popularmovies.database.FavoriteMoviesContract.COLUMN_MOVIE_ID;
+import static br.com.glima.popularmovies.database.FavoriteMoviesContract.COLUMN_MOVIE_LENGTH;
+import static br.com.glima.popularmovies.database.FavoriteMoviesContract.COLUMN_MOVIE_POSTER;
+import static br.com.glima.popularmovies.database.FavoriteMoviesContract.COLUMN_MOVIE_RATING;
+import static br.com.glima.popularmovies.database.FavoriteMoviesContract.COLUMN_MOVIE_RELEASE;
+import static br.com.glima.popularmovies.database.FavoriteMoviesContract.COLUMN_MOVIE_SYNOPSIS;
 import static br.com.glima.popularmovies.database.FavoriteMoviesContract.COLUMN_MOVIE_TITLE;
 
 /**
@@ -21,8 +26,6 @@ import static br.com.glima.popularmovies.database.FavoriteMoviesContract.COLUMN_
  */
 
 public class FavoriteMoviesController {
-
-	private SQLiteDatabase database;
 
 	private Context context;
 
@@ -35,6 +38,11 @@ public class FavoriteMoviesController {
 
 		values.put(COLUMN_MOVIE_ID, movie.getId());
 		values.put(COLUMN_MOVIE_TITLE, movie.getTitle());
+		values.put(COLUMN_MOVIE_SYNOPSIS, movie.getOverview());
+		values.put(COLUMN_MOVIE_RATING, movie.getVoteAverage());
+		values.put(COLUMN_MOVIE_RELEASE, movie.getReleaseDate());
+		values.put(COLUMN_MOVIE_LENGTH, movie.getRuntime());
+		values.put(COLUMN_MOVIE_POSTER, movie.getPosterPath());
 
 		context.getContentResolver().insert(CONTENT_URI, values);
 	}
@@ -50,15 +58,25 @@ public class FavoriteMoviesController {
 			cursor.moveToFirst();
 
 			while (!cursor.isAfterLast()) {
-				movies.add(new Movie(
-						cursor.getString(cursor.getColumnIndex(COLUMN_MOVIE_ID)),
-						cursor.getString(cursor.getColumnIndex(COLUMN_MOVIE_TITLE))));
-
+				movies.add(buildMovieFromCursor(cursor));
 				cursor.moveToNext();
 			}
 			cursor.close();
 		}
 		return movies;
+	}
+
+	@NonNull
+	private Movie buildMovieFromCursor(Cursor cursor) {
+		return new Movie(
+				cursor.getString(cursor.getColumnIndex(COLUMN_MOVIE_ID)),
+				cursor.getString(cursor.getColumnIndex(COLUMN_MOVIE_TITLE)),
+				cursor.getString(cursor.getColumnIndex(COLUMN_MOVIE_POSTER)),
+				cursor.getString(cursor.getColumnIndex(COLUMN_MOVIE_LENGTH)),
+				cursor.getString(cursor.getColumnIndex(COLUMN_MOVIE_SYNOPSIS)),
+				cursor.getString(cursor.getColumnIndex(COLUMN_MOVIE_RATING)),
+				cursor.getString(cursor.getColumnIndex(COLUMN_MOVIE_RELEASE))
+		);
 	}
 
 	public void removeMovie(String movieId) {
