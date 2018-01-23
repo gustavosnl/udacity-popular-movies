@@ -3,8 +3,13 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/favorite"
-          android:title="@string/sort_popular"
           android:icon="@drawable/ic_favorite_stroke"
+          android:title="@string/menu_favorite_description"
+          app:showAsAction="always"/>
+
+    <item android:id="@+id/share"
+          android:icon="@drawable/ic_share"
+          android:title="@string/menu_share_description"
           app:showAsAction="always"/>
 
 

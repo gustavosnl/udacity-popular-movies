@@ -37,6 +37,9 @@ public class MovieDetail {
 	public List<Video> getVideos() {
 		return videos;
 	}
+	public String getMainTrailerKey() {
+		return videos.get(0).getKey();
+	}
 
 	public String getImageUrl() {
 		return movie.getPosterPath();

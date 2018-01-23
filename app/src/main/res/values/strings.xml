@@ -14,4 +14,7 @@
     <string name="label_reviews">Reviews</string>
     <string name="label_videos">Videos</string>
     <string name="sort_favorites">Favorites</string>
+    <string name="menu_favorite_description">Favorite movie action button</string>
+    <string name="menu_share_description">Share main trailer action</string>
+    <string name="share_chooser_title">Wich app you want to share this link?</string>
 </resources>

@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
@@ -60,15 +61,13 @@ public class MovieDetailActivity extends AppCompatActivity implements Observer<M
 		loadMovie();
 	}
 
-
 	private boolean hasNetworkConnection() {
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
 		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 		return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-
-
 	}
+
 	private void loadMovie() {
 		if (!hasNetworkConnection() && isFavorite()) {
 			binding.setMovie(favoriteMoviesController.getById(getMovieIdFromIntent()));
@@ -99,8 +98,19 @@ public class MovieDetailActivity extends AppCompatActivity implements Observer<M
 			case R.id.favorite:
 				UpdateFavoriteMenuItem(item);
 				break;
+			case R.id.share:
+				shareMovieTrailer();
+				break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void shareMovieTrailer() {
+		ShareCompat.IntentBuilder.from(this)
+				.setType("text/plain")
+				.setChooserTitle(getString(R.string.share_chooser_title))
+				.setText(getString(R.string.youtube, binding.getMovie().getMainTrailerKey()))
+				.startChooser();
 	}
 
 	private void setUpFavoriteMenuItem(MenuItem favoriteItem) {
