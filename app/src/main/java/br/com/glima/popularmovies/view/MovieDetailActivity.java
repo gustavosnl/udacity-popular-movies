@@ -3,6 +3,8 @@ package br.com.glima.popularmovies.view;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -55,7 +57,24 @@ public class MovieDetailActivity extends AppCompatActivity implements Observer<M
 		binding.videosList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 		binding.videosList.addItemDecoration(new DividerItemDecoration(this));
 
-		movieDBApiService.fetchMovieDetails(getMovieIdFromIntent()).observeOn(AndroidSchedulers.mainThread()).subscribe(this);
+		loadMovie();
+	}
+
+
+	private boolean hasNetworkConnection() {
+		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+		return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+
+	}
+	private void loadMovie() {
+		if (!hasNetworkConnection() && isFavorite()) {
+			binding.setMovie(favoriteMoviesController.getById(getMovieIdFromIntent()));
+		} else {
+			movieDBApiService.fetchMovieDetails(getMovieIdFromIntent()).observeOn(AndroidSchedulers.mainThread()).subscribe(this);
+		}
 	}
 
 	private boolean hasMovieIntentExtra() {
@@ -86,17 +105,20 @@ public class MovieDetailActivity extends AppCompatActivity implements Observer<M
 
 	private void setUpFavoriteMenuItem(MenuItem favoriteItem) {
 		if (hasMovieIntentExtra()) {
-			if (favoriteMoviesController.isFavorite(getMovieIdFromIntent())) {
+			if (isFavorite()) {
 				favoriteItem.setIcon(R.drawable.ic_favorite_filled);
 			} else {
 				favoriteItem.setIcon(R.drawable.ic_favorite_stroke);
 			}
 		}
 	}
+	private boolean isFavorite() {
+		return favoriteMoviesController.isFavorite(getMovieIdFromIntent());
+	}
 
 	private void UpdateFavoriteMenuItem(MenuItem favoriteItem) {
 		if (hasMovieIntentExtra()) {
-			if (favoriteMoviesController.isFavorite(getMovieIdFromIntent())) {
+			if (isFavorite()) {
 				favoriteMoviesController.removeMovie(getMovieIdFromIntent());
 				favoriteItem.setIcon(R.drawable.ic_favorite_stroke);
 			} else {

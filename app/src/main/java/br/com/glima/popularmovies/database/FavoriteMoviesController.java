@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.glima.popularmovies.business.Movie;
+import br.com.glima.popularmovies.business.MovieDetail;
 
 import static br.com.glima.popularmovies.database.FavoriteMoviesContentProviderContract.CONTENT_URI;
 import static br.com.glima.popularmovies.database.FavoriteMoviesContract.COLUMN_MOVIE_ID;
@@ -20,6 +21,7 @@ import static br.com.glima.popularmovies.database.FavoriteMoviesContract.COLUMN_
 import static br.com.glima.popularmovies.database.FavoriteMoviesContract.COLUMN_MOVIE_RELEASE;
 import static br.com.glima.popularmovies.database.FavoriteMoviesContract.COLUMN_MOVIE_SYNOPSIS;
 import static br.com.glima.popularmovies.database.FavoriteMoviesContract.COLUMN_MOVIE_TITLE;
+import static java.util.Collections.EMPTY_LIST;
 
 /**
  * Created by gustavo.lima on 12/01/18.
@@ -41,7 +43,7 @@ public class FavoriteMoviesController {
 		values.put(COLUMN_MOVIE_SYNOPSIS, movie.getOverview());
 		values.put(COLUMN_MOVIE_RATING, movie.getVoteAverage());
 		values.put(COLUMN_MOVIE_RELEASE, movie.getReleaseDate());
-		values.put(COLUMN_MOVIE_LENGTH, movie.getRuntime());
+		values.put(COLUMN_MOVIE_LENGTH, movie.getRawRuntime());
 		values.put(COLUMN_MOVIE_POSTER, movie.getPosterPath());
 
 		context.getContentResolver().insert(CONTENT_URI, values);
@@ -90,5 +92,11 @@ public class FavoriteMoviesController {
 
 		Cursor cursor = context.getContentResolver().query(IS_FAVORITE_URI, null, null, null, null);
 		return cursor.moveToNext();
+	}
+	public MovieDetail getById(String movieId) {
+		Uri FAVORITE_URI = CONTENT_URI.buildUpon().appendPath(movieId).build();
+		Cursor cursor = context.getContentResolver().query(FAVORITE_URI, null, null, null, null);
+		cursor.moveToFirst();
+		return new MovieDetail(buildMovieFromCursor(cursor), EMPTY_LIST, EMPTY_LIST);
 	}
 }

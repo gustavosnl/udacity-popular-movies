@@ -99,6 +99,10 @@ public class Movie implements Parcelable {
 		}
 	}
 
+	public String getRawRuntime() {
+		return runtime;
+	}
+
 	public String getRuntime() {
 		SimpleDateFormat MINUTES_DATE_FORMAT = new SimpleDateFormat("mm", Locale.US);
 		SimpleDateFormat HOUR_MINUTES_DATE_FORMAT = new SimpleDateFormat("HH:mm:ss", Locale.US);
